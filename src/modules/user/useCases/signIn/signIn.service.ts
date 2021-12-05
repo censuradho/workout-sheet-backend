@@ -9,6 +9,12 @@ import { generateToken } from 'utils/_jwt'
 
 type CreateRequest = Pick<User, 'email' | 'password'>
 
+export interface SignJWTPayload {
+id: string;
+account_id: string
+}
+
+
 export class SignInService {
 	async create ({ email, password: _password }: CreateRequest) {
 		const user = await prisma.user.findFirst({
@@ -31,7 +37,14 @@ export class SignInService {
 
 		if (!isEqualPassword) throw new Error(USER_REGISTRATION.EMAIL_OR_PASSWORD_ARE_INCORRECT)
 
-		const token = generateToken({ id: user.id })
+		const payload: SignJWTPayload = {
+			id: user.id,
+			account_id: String(user.account?.id)
+		}
+
+		const token = generateToken(payload, {
+			expiresIn: '4d'
+		})
 
 		const { password, ...removePassUser } = user
 

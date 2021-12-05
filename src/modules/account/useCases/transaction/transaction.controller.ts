@@ -7,9 +7,14 @@ export class TransactionController {
 
 	async store (request: Request, response: Response) {
 
+		const { account_id } = request.user_info
+
 
 		try {
-			const result = await this.service.create(request.body)
+			const result = await this.service.create({
+				account_id,
+				...request.body
+			})
 
 			return response.status(201).json(result)
       
@@ -25,7 +30,8 @@ export class TransactionController {
 	}
 
 	async show (request: Request, response: Response) {
-		const account_id = request.params.account_id
+		const { account_id } = request.user_info
+
 
 		const result = await this.service.findMany(account_id, request.paginate)
 

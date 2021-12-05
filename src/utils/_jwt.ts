@@ -1,17 +1,15 @@
-import { verify, sign, decode, SignOptions, Jwt, Secret, VerifyOptions } from 'jsonwebtoken'
+import { verify, sign, decode, SignOptions } from 'jsonwebtoken'
 
 
 
 export function generateToken (payload: string | object | Buffer, options?: SignOptions) {
-  return sign(payload, String(process.env.JWT_SECRET), options)
+	return sign(payload, String(process.env.JWT_SECRET), options)
 }
 
-export async function verifyToken (token: string) {
-  return new Promise((resolve, reject) => {
-    sign(token, String(process.env.JWT_SECRET), (err, decode) => {
-      if (err) reject(err)
+export function verifyToken (token: string) {
+	return verify(token, String(process.env.JWT_SECRET))
+}
 
-      resolve(decode)
-    })
-  })
+export function decodeToken (token: string) {
+	return decode(token)
 }

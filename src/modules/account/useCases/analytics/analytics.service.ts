@@ -35,9 +35,9 @@ export class AnalyticsService {
 		})
 
 		return {
-			total: total._sum.amount,
-			expense: expense._sum.amount,
-			income: income._sum.amount
+			total: total._sum.amount || 0,
+			expense: expense._sum.amount || 0,
+			income: income._sum.amount || 0
 		}
 
 	}

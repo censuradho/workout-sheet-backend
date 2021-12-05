@@ -15,10 +15,7 @@ export const createTransactionValidator = yup.object({
 			value => !!OPERATION_TYPE[value as keyof typeof OPERATION_TYPE]
 		)
 		.required(),
-	account_id: 
-		yup
-			.string()
-			.required(),
+	description: yup.string().required()
 })
 
 export const deleteTransactionValidator = yup.object({

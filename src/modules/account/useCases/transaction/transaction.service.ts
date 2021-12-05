@@ -8,15 +8,16 @@ import { Meta, Paginate, Paginated } from 'middlewares/pagination'
 
 import { TRANSACTION_ERRORS } from 'constants/errors'
 
-type CreateTransaction = Pick<Transaction, 'amount' | 'type' | 'account_id'>
+type CreateTransaction = Pick<Transaction, 'amount' | 'type' | 'account_id' | 'description'>
 
 export class TransactionService {
-	async create({ amount, type, account_id }: CreateTransaction) {
+	async create({ amount, type, account_id, description }: CreateTransaction) {
 		
 		return await prisma.transaction.create({
 			data: {
 				amount,
 				type,
+				description,
 				id: uuid(),
 				account: {
 					connect: {
