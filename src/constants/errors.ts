@@ -13,6 +13,9 @@ export const ACCOUNT_ERRORS = {
 
 }
 
+export const TRANSACTION_ERRORS = {
+	NOT_FOUND: 'TRANSACTION_NOT_FOUND',
+}
 
 export const SERVER_ERRORS = {
 	INTERNAL: 'INTERNAL_SERVER_ERROR'

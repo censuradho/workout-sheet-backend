@@ -13,6 +13,7 @@ export interface Meta extends Queries {
 	_total_pages: number
 	_next_page: number
 	_previues_page: number
+	_total_items: number
 }
 
 export interface Paginated<T = any> {

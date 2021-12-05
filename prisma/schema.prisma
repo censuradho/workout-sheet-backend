@@ -33,31 +33,14 @@ model Account {
   user_id String
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   transactions Transaction[]
-  income Income[]
-  expense Expense[]
 }
 
 model Transaction {
   id String @id
   account_id String
+  description String
   amount Float
   type String
   account Account @relation(fields: [account_id], references: [id])
   created_at DateTime @default(now())
-}
-
-model Income {
-  id String @id
-  amount Float
-  created_at DateTime @default(now())
-  account_id String
-  account Account @relation(fields: [account_id], references: [id])
-}
-
-model Expense {
-  id String @id
-  amount Float
-  created_at DateTime @default(now())
-  account_id String
-  account Account @relation(fields: [account_id], references: [id])
 }

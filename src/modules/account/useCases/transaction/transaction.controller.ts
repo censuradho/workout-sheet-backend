@@ -1,7 +1,6 @@
 import{ Request, Response } from 'express'
 
 import { TransactionService } from './transaction.service'
-import { CreateTransactionValidator } from './transaction.validator'
 
 export class TransactionController {
 	constructor (private readonly service: TransactionService) {}
@@ -34,4 +33,22 @@ export class TransactionController {
 	}
 
 
+	async delete (request: Request, response: Response) {
+		const { account_id, transactions_id } = request.body
+
+		try {
+			await this.service.delete(account_id, transactions_id)
+
+			return response.sendStatus(204)
+		}
+		catch (error) {
+			if (!(error instanceof Error)) return response.sendStatus(500)
+
+			return response.status(400).json({
+				error: {
+					message: error.message
+				}
+			})
+		}
+	}
 }

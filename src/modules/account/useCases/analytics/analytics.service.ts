@@ -1,38 +1,44 @@
+import { OPERATION_TYPE } from 'constants/transaction'
 import prisma from 'prisma'
 
 export class AnalyticsService {
-	async balance (account_id: string) {
-		const { _sum: total } = await prisma.transaction.aggregate({
+	async handle (account_id: string) {
+		const income = await prisma.transaction.aggregate({
+			where: {
+				type: OPERATION_TYPE.INCOME,
+				account_id
+			},
 			_sum: {
 				amount: true
-			},
-			where: {
-				account_id
-			},	
+			}
 		})
 
-		const { _sum: income } = await prisma.income.aggregate({
+		const expense = await prisma.transaction.aggregate({
+			where: {
+				type: OPERATION_TYPE.EXPENSE,
+				account_id
+
+			},
 			_sum: {
 				amount: true
-			},
-			where: {
-				account_id
-			},	
+			}
 		})
 
-		const { _sum: expense } = await prisma.expense.aggregate({
-			_sum: {
-				amount: true
-			},
+
+		const total = await prisma.transaction.aggregate({
 			where: {
 				account_id
-			},	
+			},
+			_sum: {
+				amount: true
+			}
 		})
-		
+
 		return {
-			total: total.amount || 0,
-			income: income.amount || 0,
-			expense: expense.amount || 0
+			total: total._sum.amount,
+			expense: expense._sum.amount,
+			income: income._sum.amount
 		}
+
 	}
 }

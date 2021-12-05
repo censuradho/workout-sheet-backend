@@ -3,12 +3,16 @@ import { randomUUID as uuid } from 'crypto'
 import { Transaction } from '@prisma/client'
 
 import prisma from 'prisma'
-import { Meta, Paginate, Paginated, Queries } from 'middlewares/pagination'
+
+import { Meta, Paginate, Paginated } from 'middlewares/pagination'
+
+import { TRANSACTION_ERRORS } from 'constants/errors'
 
 type CreateTransaction = Pick<Transaction, 'amount' | 'type' | 'account_id'>
 
 export class TransactionService {
 	async create({ amount, type, account_id }: CreateTransaction) {
+		
 		return await prisma.transaction.create({
 			data: {
 				amount,
@@ -44,7 +48,8 @@ export class TransactionService {
 			_per_page: queries._per_page,
 			_next_page: queries._page + 1,
 			_previues_page: queries._page - 1,
-			_total_pages: Math.ceil(count / queries._per_page)
+			_total_pages: Math.ceil(count / queries._per_page),
+			_total_items: count
 		}
 
 		const data: Paginated = {
@@ -53,5 +58,27 @@ export class TransactionService {
 		}
 
 		return data
+	}
+
+	async delete (account_id: string, transactionS_id: string[]) {
+
+		for (const transaction_id of transactionS_id) {
+			const existTransaction = await prisma.transaction.findFirst({
+				where: {
+					id: transaction_id
+				}
+			})
+
+			if (!existTransaction) throw new Error(TRANSACTION_ERRORS.NOT_FOUND)
+		}
+
+
+		await prisma.transaction.deleteMany({
+			where:{
+				id: {
+					in: transactionS_id
+				}
+			}
+		})
 	}
 }
