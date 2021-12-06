@@ -19,10 +19,12 @@ transactionRoutes.post('/',
 	(request, response) => transactionController.store(request, response)
 )
 	.delete('/', 
+		authorizate,
 		validator(deleteTransactionValidator), 
 		(request, response) => transactionController.delete(request, response)
 	)
 	.get('/account', 
+		authorizate,
 		pagination, 
 		(request, response) => transactionController.show(request, response)
 	)

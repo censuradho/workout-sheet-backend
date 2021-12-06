@@ -40,7 +40,9 @@ export class TransactionController {
 
 
 	async delete (request: Request, response: Response) {
-		const { account_id, transactions_id } = request.body
+		const { transactions_id } = request.body
+
+		const { account_id } = request.user_info
 
 		try {
 			await this.service.delete(account_id, transactions_id)

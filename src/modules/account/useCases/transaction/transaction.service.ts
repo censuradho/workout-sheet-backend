@@ -41,7 +41,10 @@ export class TransactionService {
 				account_id
 			},
 			take: queries?._per_page,
-			skip: queries?._startIndex
+			skip: queries?._startIndex,
+			orderBy: {
+				created_at: 'desc'
+			}
 		})
 
 		const meta: Meta = {

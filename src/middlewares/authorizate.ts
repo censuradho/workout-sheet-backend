@@ -16,7 +16,6 @@ async function accountValidate (request: Request, response: Response, next: Next
 		}
 	})
 
-
 	try {
 		const payload = verifyToken(token) as SignJWTPayload
 
@@ -24,7 +23,16 @@ async function accountValidate (request: Request, response: Response, next: Next
 
 		next()
 	} catch (err) {
-		if (err instanceof Error) return response.status(401).json({
+		if (err instanceof Error) {
+
+			if (err.name === 'TokenExpiredError') return response.status(401).json({
+				error: {
+					message: AUTHENTICATION_ERRORS.TOKEN_EXPIRED
+				}
+			})
+		}
+
+		return response.status(401).json({
 			error: {
 				message: AUTHENTICATION_ERRORS.TOKEN_NOT_VALID
 			}

@@ -19,6 +19,5 @@ export const createTransactionValidator = yup.object({
 })
 
 export const deleteTransactionValidator = yup.object({
-	account_id: yup.string().uuid(),
 	transactions_id:  yup.array().of(yup.string().uuid())
 })
