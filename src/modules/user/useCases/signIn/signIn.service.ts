@@ -3,6 +3,7 @@ import { User  } from '@prisma/client'
 import { USER_REGISTRATION } from 'constants/errors'
 
 import prisma from 'prisma'
+import { GenerateRefrashToken } from 'provider/GenerateRefrashToken'
 
 import { compare } from 'utils/_bcrypt'
 import { generateToken } from 'utils/_jwt'
@@ -42,15 +43,22 @@ export class SignInService {
 			account_id: String(user.account?.id)
 		}
 
-		const token = generateToken(payload, {
-			expiresIn: '1m'
+		await prisma.refrashToken.deleteMany({
+			where: {
+				user_id: user.id
+			}
 		})
+
+		const token = generateToken(payload)
+
+		const refrash_token = await GenerateRefrashToken.execute(user.id)
 
 		const { password, ...removePassUser } = user
 
 		return {
 			...removePassUser,
-			token
+			token,
+			refrash_token
 		}
 	}
 }

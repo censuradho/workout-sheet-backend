@@ -8,7 +8,13 @@ import { SignJWTPayload } from 'modules/user/useCases/signIn/signIn.service'
 async function accountValidate (request: Request, response: Response, next: NextFunction) {
 	const { authorization } = request.headers
 
-	const token = authorization?.split(' ')[1]
+	if (!authorization) return response.status(401).json({
+		error: {
+			message: AUTHENTICATION_ERRORS.TOKEN_NOT_FOUND
+		}
+	})
+	
+	const [, token] = authorization.split(' ')
 
 	if (!token) return response.status(401).json({
 		error: {
