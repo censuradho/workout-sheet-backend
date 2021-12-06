@@ -37,11 +37,6 @@ export class PerfilService {
 		return await prisma.profile.findFirst({
 			where: {
 				user_id
-			},
-			include: {
-				user: {
-					select: USER_SELECT
-				}
 			}
 		})
 	}

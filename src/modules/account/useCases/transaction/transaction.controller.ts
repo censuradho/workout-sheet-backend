@@ -1,4 +1,5 @@
 import{ Request, Response } from 'express'
+import logger from 'utils/logger'
 
 import { TransactionService } from './transaction.service'
 
@@ -50,7 +51,10 @@ export class TransactionController {
 			return response.sendStatus(204)
 		}
 		catch (error) {
-			if (!(error instanceof Error)) return response.sendStatus(500)
+			if (!(error instanceof Error)) {
+				logger.error(error)
+				return response.sendStatus(500)
+			}
 
 			return response.status(400).json({
 				error: {

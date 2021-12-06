@@ -1,4 +1,5 @@
 import { Response, Request} from 'express'
+import logger from 'utils/logger'
 
 import { PerfilService } from './perfil.service'
 
@@ -7,12 +8,22 @@ export class PerfilController {
 
 	async store (request: Request, response: Response) {
 		try {
-			await this.service.create(request.body)
+			const { id } = request.user_info
+
+			const user_id = request.body.user_id || id
+			
+			await this.service.create({
+				...request.body,
+				user_id
+			})
 
 			return response.sendStatus(201)
 
 		} catch (err) {
-			if (!(err instanceof Error)) return response.sendStatus(500)
+			if (!(err instanceof Error)) {
+				logger.error(err)
+				return response.sendStatus(500)
+			}
 
 			return response.status(400).json({
 				error: {

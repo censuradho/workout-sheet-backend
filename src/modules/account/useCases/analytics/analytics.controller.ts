@@ -1,5 +1,6 @@
 import { SERVER_ERRORS } from 'constants/errors'
 import { Request, Response } from 'express'
+import logger from 'utils/logger'
 import { AnalyticsService } from './analytics.service'
 
 export class AnalyticsController {
@@ -14,11 +15,16 @@ export class AnalyticsController {
   
 			return response.json(result)
 		} catch (err) {
-			if (!(err instanceof Error)) return response.status(500).json({
-				error: {
-					message: SERVER_ERRORS.INTERNAL
-				}
-			})
+			if (!(err instanceof Error)) {
+
+				logger.error(err)
+				return response.status(500).json({
+					error: {
+						message: SERVER_ERRORS.INTERNAL
+					}
+				})
+			}
+
 		}
 	}
 }

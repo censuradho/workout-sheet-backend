@@ -43,7 +43,7 @@ export class SignInService {
 		}
 
 		const token = generateToken(payload, {
-			expiresIn: '4d'
+			expiresIn: '1m'
 		})
 
 		const { password, ...removePassUser } = user

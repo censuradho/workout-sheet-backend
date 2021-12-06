@@ -1,5 +1,6 @@
 import { SERVER_ERRORS } from 'constants/errors'
 import { Request, Response } from 'express'
+import logger from 'utils/logger'
 
 import { AccountService } from './account.service'
 
@@ -14,11 +15,15 @@ export class AccountController {
 	
 			return response.json(result)
 		} catch (err) {
-			if (!(err instanceof Error)) return response.status(500).json({
-				error: {
-					message: SERVER_ERRORS.INTERNAL
-				}
-			})
+			if (!(err instanceof Error)) {
+
+				logger.error(err)
+				return response.status(500).json({
+					error: {
+						message: SERVER_ERRORS.INTERNAL
+					}
+				})
+			}
 
 			return response.status(404).json({
 				error: {
