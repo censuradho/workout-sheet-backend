@@ -4,7 +4,7 @@ import { verify, sign, decode, SignOptions } from 'jsonwebtoken'
 
 export function generateToken (payload: string | object | Buffer, options?: SignOptions) {
 	return sign(payload, String(process.env.JWT_SECRET), {
-		expiresIn: '1h',
+		expiresIn: '20m',
 		...options
 	})
 }

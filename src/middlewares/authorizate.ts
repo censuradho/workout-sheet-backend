@@ -40,7 +40,7 @@ async function accountValidate (request: Request, response: Response, next: Next
 
 		return response.status(401).json({
 			error: {
-				message: AUTHENTICATION_ERRORS.TOKEN_NOT_VALID
+				message: AUTHENTICATION_ERRORS.TOKEN_INVALID
 			}
 		})
 	}
