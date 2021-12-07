@@ -1,0 +1,1 @@
+export const REFRASH_TOKEN_COOKIE_KEY = '_devFinance_refrash_token'

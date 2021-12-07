@@ -10,7 +10,6 @@ export class TransactionController {
 
 		const { account_id } = request.user_info
 
-
 		try {
 			const result = await this.service.create({
 				account_id,
@@ -32,7 +31,6 @@ export class TransactionController {
 
 	async show (request: Request, response: Response) {
 		const { account_id } = request.user_info
-
 
 		const result = await this.service.findMany(account_id, request.paginate)
 

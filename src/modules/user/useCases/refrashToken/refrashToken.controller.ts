@@ -7,7 +7,7 @@ export class RefrashTokenController {
   
 	async handle (request: Request, response: Response) {
 		try {
-			const { refrash_token } = request.body
+			const refrash_token = request.cookies
 
 			const token = await this.service.execute(refrash_token)
 	
