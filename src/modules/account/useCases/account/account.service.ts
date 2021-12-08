@@ -1,5 +1,6 @@
-import { ACCOUNT_ERRORS } from 'constants/errors'
 import prisma from 'prisma'
+
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 export class AccountService {
 
@@ -10,7 +11,10 @@ export class AccountService {
 			}
 		})
 
-		if (!result) throw new Error(ACCOUNT_ERRORS.NOT_ACCOUNT_RELATED_USER)
+		if (!result) throw new ErrorHandler('', {
+			error: 'ACCOUNT_NOT_ACCOUNT_RELATED_USER',
+			statusCode: 400
+		})
 
 		return result
 	}

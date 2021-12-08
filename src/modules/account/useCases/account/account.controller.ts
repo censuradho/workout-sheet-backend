@@ -1,5 +1,5 @@
 import { SERVER_ERRORS } from 'constants/errors'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import logger from 'utils/logger'
 
 import { AccountService } from './account.service'
@@ -7,7 +7,7 @@ import { AccountService } from './account.service'
 export class AccountController {
 	constructor (private readonly service: AccountService) {}
 
-	async show (request: Request, response: Response) {
+	async show (request: Request, response: Response, next: NextFunction) {
 		try {
 			const user_id = request.params.user_id
 
@@ -15,21 +15,8 @@ export class AccountController {
 	
 			return response.json(result)
 		} catch (err) {
-			if (!(err instanceof Error)) {
-
-				logger.error(err)
-				return response.status(500).json({
-					error: {
-						message: SERVER_ERRORS.INTERNAL
-					}
-				})
-			}
-
-			return response.status(404).json({
-				error: {
-					message: err.message
-				}
-			})
+			logger.error(err)
+			next(err)	
 		}
 
 	}

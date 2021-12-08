@@ -6,7 +6,7 @@ import prisma from 'prisma'
 
 import { Meta, Paginate, Paginated } from 'middlewares/pagination'
 
-import { TRANSACTION_ERRORS } from 'constants/errors'
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 type CreateTransaction = Pick<Transaction, 'amount' | 'type' | 'account_id' | 'description'>
 
@@ -73,7 +73,10 @@ export class TransactionService {
 				}
 			})
 
-			if (!existTransaction) throw new Error(TRANSACTION_ERRORS.NOT_FOUND)
+			if (!existTransaction) throw new ErrorHandler('', {
+				error: 'TRANSACTION_NOT_FOUND',
+				statusCode: 404
+			})
 		}
 
 

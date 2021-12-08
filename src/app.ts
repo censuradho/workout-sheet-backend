@@ -3,6 +3,8 @@ import cors from 'cors'
 
 import cookieParser from 'cookie-parser'
 
+import { errorHandler } from 'middlewares/error'
+
 import 'dotenv'
 
 
@@ -15,5 +17,7 @@ app.use(cookieParser())
 app.use(cors())
 
 app.use(routes)
+
+app.use(errorHandler)
 
 export default app

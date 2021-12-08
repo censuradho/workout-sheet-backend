@@ -1,4 +1,4 @@
-import{ Request, Response } from 'express'
+import{ NextFunction, Request, Response } from 'express'
 
 import logger from 'utils/logger'
 
@@ -9,21 +9,20 @@ import { SignInService } from './signIn.service'
 export class SignInController {
 	constructor (private readonly service: SignInService) {}
 
-	async store (request: Request, response: Response) {
+	async store (request: Request, response: Response, next: NextFunction) {
     
-
 		try {
 			const result = await this.service.create(request.body)
 
 			const { refrash_token, ...rest } = result
 
 			logger.info({
-				user_id: result.id
+				user_id: result.user.id
 			}, 'logged in user')
 
-			response.cookie(REFRASH_TOKEN_COOKIE_KEY, refrash_token.id, {
-				// secure: process.env.NODE_ENV !== 'development',
-				// httpOnly: true,
+			const cookies = response.cookie(REFRASH_TOKEN_COOKIE_KEY, refrash_token.id, {
+				secure: false,
+				httpOnly: true,
 				expires: new Date(refrash_token.expires_in),
 			})
 
@@ -31,16 +30,8 @@ export class SignInController {
 			return response.json(rest)
       
 		} catch (error) {
-			if (!(error instanceof Error)) {
-				logger.error(error)
-				return response.sendStatus(500)
-			}
-
-			return response.status(401).json({
-				error: {
-					message: error.message
-				}
-			})
+			next(error)
+			logger.error(error)
 		}
 	}
 }

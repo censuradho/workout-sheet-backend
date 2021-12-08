@@ -6,14 +6,12 @@ import { GenerateRefrashToken } from 'provider/GenerateRefrashToken'
 
 import { generateToken } from 'utils/_jwt'
 
-import { AUTHENTICATION_ERRORS } from 'constants/errors'
-
-import { SignJWTPayload } from '../signIn/signIn.service'
-
+import { SignJWTPayload, UserSignIn } from '../signIn/signIn.service'
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 export class RefrashTokenService  {
 	async execute (refrash_token: string) {
-		const refrashToken =  await prisma.refrashToken.findFirst({
+		const refrashToken = await prisma.refrashToken.findFirst({
 			where: {
 				id: refrash_token
 			},
@@ -21,13 +19,20 @@ export class RefrashTokenService  {
 				user: {
 					select: {
 						id: true,
-						account: true
+						account: true,
+						email: true,
+						created_at: true,
+						profile: true,
+						updated_at: true
 					}
 				}
 			}
 		})
 
-		if (!refrashToken) throw new Error(AUTHENTICATION_ERRORS.REFRASH_TOKEN_INVALID)
+		if (!refrashToken) throw new ErrorHandler('', {
+			error: 'AUTHENTICATION_REFRASH_TOKEN_INVALID',
+			statusCode: 401
+		})
 
 		const isRefrashTokenExpired = isAfter(new Date().getTime(), refrashToken.expires_in)
 
@@ -35,7 +40,19 @@ export class RefrashTokenService  {
 			id: refrashToken.user.id,
 			account_id: String(refrashToken.user.account?.id)
 		}
-
+		
+		const user: UserSignIn = {
+			id: refrashToken.user_id,
+			account: {
+				id: refrashToken.user.account?.id || ''
+			},
+			profile: refrashToken.user.profile ? {
+				id: refrashToken.user.profile.id,
+				avatar_url: refrashToken.user.profile.avatar_url,
+				username: refrashToken.user.profile.username,
+			} : undefined,
+		}
+		
 		const token = generateToken(payload)
 
 		if (isRefrashTokenExpired) {
@@ -44,15 +61,17 @@ export class RefrashTokenService  {
 					user_id: refrashToken.user_id
 				}
 			})
-			const newRefrashToken = await GenerateRefrashToken.execute(refrashToken.user_id)
 
+			const newRefrashToken = await GenerateRefrashToken.execute(refrashToken.user_id)
+			
 			return {
 				token, 
-				refrash_token: newRefrashToken
+				user,
+				refrash_token: newRefrashToken,
 			}
 		}
 
 
-		return { token }
+		return { token, user }
 	}
 }

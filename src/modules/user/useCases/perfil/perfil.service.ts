@@ -6,6 +6,7 @@ import { PERFIL_ERRORS } from 'constants/errors'
 import prisma from 'prisma'
 
 import { USER_SELECT } from 'constants/select'
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 type CreateProfile = Pick<Profile, 'avatar_url' | 'user_id' | 'username'>
 
@@ -17,7 +18,10 @@ export class PerfilService {
 			}
 		})
 
-		if (perfilExist) throw new Error(PERFIL_ERRORS.ALREADY_EXIST)
+		if (perfilExist) throw new ErrorHandler('', {
+			error: 'PERFIL_ALREADY_EXIST',
+			statusCode: 400
+		})
 
 		return await prisma.profile.create({
 			data: {

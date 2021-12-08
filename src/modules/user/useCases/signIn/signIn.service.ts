@@ -1,9 +1,10 @@
-import { User  } from '@prisma/client'
+import { User, Profile } from '@prisma/client'
 
 import { USER_REGISTRATION } from 'constants/errors'
 
 import prisma from 'prisma'
 import { GenerateRefrashToken } from 'provider/GenerateRefrashToken'
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 import { compare } from 'utils/_bcrypt'
 import { generateToken } from 'utils/_jwt'
@@ -15,6 +16,13 @@ id: string;
 account_id: string
 }
 
+export interface UserSignIn {
+	id: string,
+	account: {
+		id: string
+	},
+	profile?: Pick<Profile, 'id' | 'avatar_url' | 'username'> 
+}
 
 export class SignInService {
 	async create ({ email, password: _password }: CreateRequest) {
@@ -32,11 +40,17 @@ export class SignInService {
 			}
 		})
 
-		if (!user) throw new Error(USER_REGISTRATION.EMAIL_OR_PASSWORD_ARE_INCORRECT)
+		if (!user) throw new ErrorHandler('', {
+			error: 'EMAIL_OR_PASSWORD_ARE_INCORRECT',
+			statusCode: 401
+		})
 
 		const isEqualPassword = await compare(_password, user.password)
 
-		if (!isEqualPassword) throw new Error(USER_REGISTRATION.EMAIL_OR_PASSWORD_ARE_INCORRECT)
+		if (!isEqualPassword) throw new ErrorHandler('', {
+			error: 'EMAIL_OR_PASSWORD_ARE_INCORRECT',
+			statusCode: 401
+		})
 
 		const payload: SignJWTPayload = {
 			id: user.id,
@@ -55,9 +69,21 @@ export class SignInService {
 
 		const { password, ...removePassUser } = user
 
+		const userSignIn: UserSignIn = {
+			account: {
+				id: removePassUser.account?.id || '',
+			},
+			profile: removePassUser.profile ? {
+				avatar_url: removePassUser.profile?.avatar_url,
+				username: removePassUser.profile?.username,
+				id: removePassUser.profile?.id
+			} : undefined,
+			id: removePassUser.id
+		}
+
 		return {
-			...removePassUser,
 			token,
+			user: userSignIn,
 			refrash_token
 		}
 	}

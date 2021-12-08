@@ -5,6 +5,7 @@ import { hash } from 'utils/_bcrypt'
 
 import prisma from 'prisma'
 import { USER_REGISTRATION } from 'constants/errors'
+import { ErrorHandler } from 'utils/ErrorHandler'
 
 type UserRegister = Pick<User, 'email' | 'password'>
 
@@ -17,7 +18,10 @@ export class RegistrationService {
 			}
 		})
 
-		if (userExist) throw new Error(USER_REGISTRATION.ALREADY_EXIST)
+		if (userExist) throw new ErrorHandler('', {
+			error: 'USER_REGISTRATION_ALREADY_EXIST',
+			statusCode: 401
+		})
 
 		const passwordHash = await hash(password)
 
@@ -55,7 +59,10 @@ export class RegistrationService {
 			}
 		})
 
-		if (!userExist) throw new Error(USER_REGISTRATION.NOT_FOUND)
+		if (!userExist) throw new ErrorHandler('', {
+			error: 'USER_REGISTRATION_NOT_FOUND',
+			statusCode: 404
+		})
 
 		await prisma.user.delete({
 			where: {

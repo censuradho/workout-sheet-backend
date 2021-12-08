@@ -1,12 +1,13 @@
-import { SERVER_ERRORS } from 'constants/errors'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
+
 import logger from 'utils/logger'
+
 import { AnalyticsService } from './analytics.service'
 
 export class AnalyticsController {
 	constructor (private readonly service: AnalyticsService) {}
   
-	async index (request: Request, response: Response) {
+	async index (request: Request, response: Response, next: NextFunction) {
 		try {
 			const { account_id } = request.params
 
@@ -15,16 +16,8 @@ export class AnalyticsController {
   
 			return response.json(result)
 		} catch (err) {
-			if (!(err instanceof Error)) {
-
-				logger.error(err)
-				return response.status(500).json({
-					error: {
-						message: SERVER_ERRORS.INTERNAL
-					}
-				})
-			}
-
+			logger.error(err)
+			next(err)
 		}
 	}
 }

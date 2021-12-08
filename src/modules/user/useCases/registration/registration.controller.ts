@@ -1,4 +1,5 @@
-import{ Request, Response } from 'express'
+import { nextDay } from 'date-fns'
+import{ NextFunction, Request, Response } from 'express'
 import logger from 'utils/logger'
 
 import { RegistrationService } from './registration.service'
@@ -6,7 +7,7 @@ import { RegistrationService } from './registration.service'
 export class RegistrationController {
 	constructor (private readonly service: RegistrationService) {}
 
-	async store (request: Request, response: Response) {
+	async store (request: Request, response: Response, next: NextFunction) {
     
 		try {
 			await this.service.create(request.body)
@@ -14,13 +15,8 @@ export class RegistrationController {
 			return response.sendStatus(201)
       
 		} catch (error) {
-			if (!(error instanceof Error)) return response.sendStatus(500)
-
-			return response.status(400).json({
-				error: {
-					message: error.message
-				}
-			})
+			next(error)
+			logger.error(error)
 		}
 	}
 
@@ -30,7 +26,7 @@ export class RegistrationController {
 		return response.json(users)
 	}
 
-	async delete (request: Request, response: Response) {
+	async delete (request: Request, response: Response, next: NextFunction) {
         
 		const id = String(request.params.id)
 
@@ -40,16 +36,9 @@ export class RegistrationController {
 			return response.sendStatus(204)
       
 		} catch (error) {
-			if (!(error instanceof Error)) {
-				logger.error(error)
-				return response.sendStatus(500)
-			}
-
-			return response.status(400).json({
-				error: {
-					message: error.message
-				}
-			})
+			next(error)
+			logger.error(error)
+			
 		}
 	}
 }
