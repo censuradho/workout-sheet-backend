@@ -7,8 +7,8 @@ import authorize from 'middlewares/authorizate'
 
 const perfilRoutes = Router()
 
-perfilRoutes.post('/', authorize, validator(createPerfilValidator), (request, response) => perfilController.store(request, response))
-perfilRoutes.get('/:user_id', (request, response) => perfilController.show(request, response))
+perfilRoutes.post('/', authorize, validator(createPerfilValidator), (request, response, next) => perfilController.store(request, response, next))
+perfilRoutes.get('/:user_id', (request, response, next) => perfilController.show(request, response, next))
 
 export { perfilRoutes }
 

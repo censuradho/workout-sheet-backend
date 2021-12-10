@@ -64,26 +64,23 @@ export class TransactionService {
 		return data
 	}
 
-	async delete (account_id: string, transactionS_id: string[]) {
+	async delete (transaction_id: string) {
 
-		for (const transaction_id of transactionS_id) {
-			const existTransaction = await prisma.transaction.findFirst({
-				where: {
-					id: transaction_id
-				}
-			})
+		const existTransaction = await prisma.transaction.findFirst({
+			where: {
+				id: transaction_id
+			}
+		})
 
-			if (!existTransaction) throw new ErrorHandler('', {
-				error: 'TRANSACTION_NOT_FOUND',
-				statusCode: 404
-			})
-		}
-
+		if (!existTransaction) throw new ErrorHandler('', {
+			error: 'TRANSACTION_NOT_FOUND',
+			statusCode: 404
+		})
 
 		await prisma.transaction.deleteMany({
 			where:{
 				id: {
-					in: transactionS_id
+					in: transaction_id
 				}
 			}
 		})

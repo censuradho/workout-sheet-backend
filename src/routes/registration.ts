@@ -5,8 +5,8 @@ import { registrationController, createRegistrationValidator } from 'modules/use
 
 const routesRegistration = Router()
 
-routesRegistration.post('/', validator(createRegistrationValidator), (request, response) => registrationController.store(request, response))
-routesRegistration.get('/', (request, response) => registrationController.index(request, response))
-routesRegistration.delete('/:id', (request, response) => registrationController.delete(request, response))
+routesRegistration.post('/', validator(createRegistrationValidator), (request, response, next) => registrationController.store(request, response, next))
+routesRegistration.get('/', (request, response) => registrationController.index(request, response,))
+routesRegistration.delete('/:id', (request, response, next) => registrationController.delete(request, response, next))
 
 export { routesRegistration }

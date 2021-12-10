@@ -5,12 +5,13 @@ interface PayloadError {
   error: keyof typeof ERROR_CONSTANTS 
 }
 
-export class ErrorHandler extends Error implements PayloadError  {
+export class ErrorHandler extends Error  {
 	statusCode: number
 	error:  keyof typeof ERROR_CONSTANTS
   
 	constructor (message: string, error: PayloadError) {
 		super(message)
+		this.message = message
 		this.statusCode = error.statusCode
 		this.error = error.error
 	}

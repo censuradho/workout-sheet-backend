@@ -34,7 +34,7 @@ export class PerfilController {
 	
 			return response.json(perfil)
 		} catch (err) {
-			logger.info(err)
+			logger.error(err)
 			next(err)
 		}
 	}

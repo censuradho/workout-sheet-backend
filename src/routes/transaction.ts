@@ -16,17 +16,17 @@ const transactionRoutes = Router()
 transactionRoutes.post('/', 
 	authorizate, 
 	validator(createTransactionValidator), 
-	(request, response) => transactionController.store(request, response)
+	(request, response, next) => transactionController.store(request, response, next)
 )
-	.delete('/', 
+	.delete('/:id', 
 		authorizate,
 		validator(deleteTransactionValidator), 
-		(request, response) => transactionController.delete(request, response)
+		(request, response, next) => transactionController.delete(request, response, next)
 	)
 	.get('/account', 
 		authorizate,
 		pagination, 
-		(request, response) => transactionController.show(request, response)
+		(request, response, next) => transactionController.show(request, response, next)
 	)
 
 export { transactionRoutes }

@@ -2,11 +2,14 @@ import { OPERATION_TYPE } from 'constants/transaction'
 import prisma from 'prisma'
 
 export class AnalyticsService {
-	async handle (account_id: string) {
+	async handle (user_id: string, account_id: string) {
 		const income = await prisma.transaction.aggregate({
 			where: {
 				type: OPERATION_TYPE.INCOME,
-				account_id
+				account: {
+					user_id,
+					id: account_id
+				}
 			},
 			_sum: {
 				amount: true
