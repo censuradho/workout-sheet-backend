@@ -1,11 +1,12 @@
 import { REFRASH_TOKEN_COOKIE_KEY } from 'constants/auth'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import logger from 'utils/logger'
 import { SignOutService } from './signOut.service'
 
 export class SignOutController {
 	constructor (private readonly service: SignOutService) {}
 
-	async execute (request: Request, response: Response) {
+	async execute (request: Request, response: Response, next: NextFunction) {
 		try {
         
 			const refrash_token_cookie = request.cookies
@@ -16,7 +17,8 @@ export class SignOutController {
 			return response.sendStatus(200)
 
 		} catch (err) {
-			return response.sendStatus(500)
+			logger.error(err)
+			next(err)
 		}
 	}
 }

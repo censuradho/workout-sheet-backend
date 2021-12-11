@@ -6,6 +6,8 @@ import { transactionRoutes } from './transaction'
 import { accountRoutes } from './account'
 import { authRoutes } from './auth'
 import { analyticsRoutes } from './analytics'
+import { errorHandler } from 'middlewares/error'
+import app from 'app'
 
 const routes = Router()
 

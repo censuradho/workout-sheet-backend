@@ -17,7 +17,7 @@ export class RegistrationService {
 			}
 		})
 
-		if (userExist) throw new ErrorHandler('', {
+		if (userExist) throw new ErrorHandler('USER_REGISTRATION_ALREADY_EXIST', {
 			error: 'USER_REGISTRATION_ALREADY_EXIST',
 			statusCode: 401
 		})

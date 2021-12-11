@@ -11,7 +11,6 @@ export class ErrorHandler extends Error  {
   
 	constructor (message: string, error: PayloadError) {
 		super(message)
-		this.message = message
 		this.statusCode = error.statusCode
 		this.error = error.error
 	}

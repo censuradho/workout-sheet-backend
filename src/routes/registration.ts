@@ -6,7 +6,7 @@ import { registrationController, createRegistrationValidator } from 'modules/use
 const routesRegistration = Router()
 
 routesRegistration.post('/', validator(createRegistrationValidator), (request, response, next) => registrationController.store(request, response, next))
-routesRegistration.get('/', (request, response) => registrationController.index(request, response,))
+routesRegistration.get('/', (request, response, next) => registrationController.index(request, response, next))
 routesRegistration.delete('/:id', (request, response, next) => registrationController.delete(request, response, next))
 
 export { routesRegistration }

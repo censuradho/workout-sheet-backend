@@ -5,6 +5,7 @@ import { USER_REGISTRATION } from 'constants/errors'
 import prisma from 'prisma'
 import { GenerateRefrashToken } from 'provider/GenerateRefrashToken'
 import { ErrorHandler } from 'utils/ErrorHandler'
+import logger from 'utils/logger'
 
 import { compare } from 'utils/_bcrypt'
 import { generateToken } from 'utils/_jwt'

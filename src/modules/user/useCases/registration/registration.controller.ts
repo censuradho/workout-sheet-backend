@@ -21,10 +21,15 @@ export class RegistrationController {
 		}
 	}
 
-	async index (request: Request, response: Response) {
-		const users = await this.service.findMany()
+	async index (request: Request, response: Response, next: NextFunction) {
+		try {
+			const users = await this.service.findMany()
 
-		return response.json(users)
+			return response.json(users)
+		} catch (err) {
+			logger.error(err)
+			next(err)
+		}
 	}
 
 	async delete (request: Request, response: Response, next: NextFunction) {
