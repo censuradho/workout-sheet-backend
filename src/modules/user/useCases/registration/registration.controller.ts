@@ -44,7 +44,6 @@ export class RegistrationController {
 		} catch (error) {
 			next(error)
 			logger.error(error)
-			
 		}
 	}
 }

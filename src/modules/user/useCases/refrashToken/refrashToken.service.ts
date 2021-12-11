@@ -22,7 +22,6 @@ export class RefrashTokenService  {
 						account: true,
 						email: true,
 						created_at: true,
-						profile: true,
 						updated_at: true
 					}
 				}
@@ -45,12 +44,7 @@ export class RefrashTokenService  {
 			id: refrashToken.user_id,
 			account: {
 				id: refrashToken.user.account?.id || ''
-			},
-			profile: refrashToken.user.profile ? {
-				id: refrashToken.user.profile.id,
-				avatar_url: refrashToken.user.profile.avatar_url,
-				username: refrashToken.user.profile.username,
-			} : undefined,
+			}
 		}
 		
 		const token = generateToken(payload)

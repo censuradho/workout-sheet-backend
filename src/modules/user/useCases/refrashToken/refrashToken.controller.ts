@@ -15,7 +15,7 @@ export class RefrashTokenController {
 			const result = await this.service.execute(refrash_token_cookie[REFRASH_TOKEN_COOKIE_KEY])
 			
 			result.refrash_token && response.cookie(REFRASH_TOKEN_COOKIE_KEY, result.refrash_token?.id, {
-				secure: false,
+				secure: process.env.NODE_ENV !== 'development',
 				httpOnly: true,
 				expires: new Date(result.refrash_token.expires_in),
 			})

@@ -1,11 +1,9 @@
-import { User, Profile } from '@prisma/client'
+import { User } from '@prisma/client'
 
-import { USER_REGISTRATION } from 'constants/errors'
 
 import prisma from 'prisma'
 import { GenerateRefrashToken } from 'provider/GenerateRefrashToken'
 import { ErrorHandler } from 'utils/ErrorHandler'
-import logger from 'utils/logger'
 
 import { compare } from 'utils/_bcrypt'
 import { generateToken } from 'utils/_jwt'
@@ -21,8 +19,7 @@ export interface UserSignIn {
 	id: string,
 	account: {
 		id: string
-	},
-	profile?: Pick<Profile, 'id' | 'avatar_url' | 'username'> 
+	}
 }
 
 export class SignInService {
@@ -32,7 +29,6 @@ export class SignInService {
 				email
 			},
 			include: {
-				profile: true,
 				account: {
 					select: {
 						id: true,
@@ -74,11 +70,6 @@ export class SignInService {
 			account: {
 				id: removePassUser.account?.id || '',
 			},
-			profile: removePassUser.profile ? {
-				avatar_url: removePassUser.profile?.avatar_url,
-				username: removePassUser.profile?.username,
-				id: removePassUser.profile?.id
-			} : undefined,
 			id: removePassUser.id
 		}
 

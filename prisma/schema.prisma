@@ -14,20 +14,10 @@ model User {
   password String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
-  profile Profile?
   account Account?
   refrash_token RefrashToken?
 }
 
-model Profile {
-  id String @id
-  username String
-  avatar_url String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
-  user_id String
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
-}
 
 model Account {
   id String @id

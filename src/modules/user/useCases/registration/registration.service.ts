@@ -1,4 +1,4 @@
-import { User, Profile } from '@prisma/client'
+import { User } from '@prisma/client'
 import { randomUUID as uuid  } from 'crypto'
 
 import { hash } from 'utils/_bcrypt'
