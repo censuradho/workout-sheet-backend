@@ -6,7 +6,7 @@ export function errorHandler (error: Error, request: Request, response: Response
 	if (error instanceof ErrorHandler) {
 		return response.status(error.statusCode).json({
 			error: {
-				message: error.message,
+				// message: error.message,
 				name: error.error
 			}
 		})

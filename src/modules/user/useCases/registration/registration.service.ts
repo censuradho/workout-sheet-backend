@@ -4,7 +4,6 @@ import { randomUUID as uuid  } from 'crypto'
 import { hash } from 'utils/_bcrypt'
 
 import prisma from 'prisma'
-import { USER_REGISTRATION } from 'constants/errors'
 import { ErrorHandler } from 'utils/ErrorHandler'
 
 type UserRegister = Pick<User, 'email' | 'password'>

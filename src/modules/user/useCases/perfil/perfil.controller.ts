@@ -26,6 +26,18 @@ export class PerfilController {
 		}
 	}
 
+	async update (request: Request, response: Response, next: NextFunction) {
+
+		try {
+			const { id } = request.user_info
+
+			await this.service.update(id, request.body)
+		} catch (err) {
+			logger.error(err)
+			next(err)
+		}
+	}
+
 	async show (request: Request, response: Response, next: NextFunction) {
 		try {
 			const user_id = String(request.params.user_id)

@@ -15,6 +15,7 @@ export class RegistrationController {
 			return response.sendStatus(201)
       
 		} catch (error) {
+			console.log(error)
 			next(error)
 			logger.error(error)
 		}

@@ -1,14 +1,13 @@
 import { randomUUID as uuid } from 'crypto'
 
 import { Profile } from '@prisma/client'
-import { PERFIL_ERRORS } from 'constants/errors'
 
 import prisma from 'prisma'
 
-import { USER_SELECT } from 'constants/select'
 import { ErrorHandler } from 'utils/ErrorHandler'
 
 type CreateProfile = Pick<Profile, 'avatar_url' | 'user_id' | 'username'>
+type UpdateProfile = Pick<Profile, 'avatar_url' | 'username'>
 
 export class PerfilService {
 	async create ({ avatar_url, user_id, username }: CreateProfile) {
@@ -37,6 +36,16 @@ export class PerfilService {
 		})
 	}
 
+	async update (user_id: string, payload: Partial<UpdateProfile>) {
+		await prisma.profile.update({
+			where: {
+				user_id
+			},
+			data: {
+				...payload
+			}
+		})
+	}
 	async findByUserId (user_id: string) {
 		return await prisma.profile.findFirst({
 			where: {
