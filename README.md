@@ -10,4 +10,5 @@ A documentação esta em ```/docs```
 
 ## Models
 
-![data model](https://user-images.githubusercontent.com/49209628/144836925-33b2209c-162d-4257-8879-e864bec7e6af.png)
+![Untitled (1)](https://user-images.githubusercontent.com/49209628/145696240-86c13ee4-d290-4c62-96b4-ac1e383048e5.png)
+
