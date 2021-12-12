@@ -14,7 +14,7 @@ function validator (schema: BaseSchema) {
 		} catch (err) {
 			if (!(err instanceof ValidationError)) return response.status(500).json({
 				error: {
-					message: SERVER_ERRORS.INTERNAL
+					message: SERVER_ERRORS.INTERNAL_SERVER_ERROR
 				}
 			})
 

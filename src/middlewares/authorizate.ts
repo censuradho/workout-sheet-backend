@@ -4,8 +4,6 @@ import { ERROR_CONSTANTS } from 'constants/errors'
 
 import {  verifyToken } from 'utils/_jwt'
 import { SignJWTPayload } from 'modules/user/useCases/signIn/signIn.service'
-import { ErrorHandler } from 'utils/ErrorHandler'
-import logger from 'utils/logger'
 
 async function accountValidate (request: Request, response: Response, next: NextFunction) {
 	const { authorization } = request.headers
