@@ -28,12 +28,7 @@ export class RegistrationService {
 			data: {
 				email,
 				password: passwordHash,
-				id: uuid(),
-				account: {
-					create: {
-						id: uuid()
-					}
-				}
+				id: uuid()
 			}
 		})
 

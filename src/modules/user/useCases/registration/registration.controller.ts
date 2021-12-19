@@ -9,41 +9,26 @@ export class RegistrationController {
 
 	async store (request: Request, response: Response, next: NextFunction) {
     
-		try {
-			await this.service.create(request.body)
+		await this.service.create(request.body)
 
-			return response.sendStatus(201)
-      
-		} catch (error) {
-			console.log(error)
-			next(error)
-			logger.error(error)
-		}
+		return response.sendStatus(201)
+
 	}
 
 	async index (request: Request, response: Response, next: NextFunction) {
-		try {
-			const users = await this.service.findMany()
+		const users = await this.service.findMany()
 
-			return response.json(users)
-		} catch (err) {
-			logger.error(err)
-			next(err)
-		}
+		return response.json(users)
+
 	}
 
 	async delete (request: Request, response: Response, next: NextFunction) {
         
 		const id = String(request.params.id)
 
-		try {
-			await this.service.delete(id)
+		await this.service.delete(id)
 
-			return response.sendStatus(204)
+		return response.sendStatus(204)
       
-		} catch (error) {
-			next(error)
-			logger.error(error)
-		}
 	}
 }

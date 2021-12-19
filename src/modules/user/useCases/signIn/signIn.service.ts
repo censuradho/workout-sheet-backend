@@ -12,14 +12,10 @@ type CreateRequest = Pick<User, 'email' | 'password'>
 
 export interface SignJWTPayload {
 id: string;
-account_id: string
 }
 
 export interface UserSignIn {
-	id: string,
-	account: {
-		id: string
-	}
+	id: string
 }
 
 export class SignInService {
@@ -27,13 +23,6 @@ export class SignInService {
 		const user = await prisma.user.findFirst({
 			where: {
 				email
-			},
-			include: {
-				account: {
-					select: {
-						id: true,
-					}
-				}
 			}
 		})
 
@@ -51,7 +40,6 @@ export class SignInService {
 
 		const payload: SignJWTPayload = {
 			id: user.id,
-			account_id: String(user.account?.id)
 		}
 
 		await prisma.refrashToken.deleteMany({
@@ -67,10 +55,7 @@ export class SignInService {
 		const { password, ...removePassUser } = user
 
 		const userSignIn: UserSignIn = {
-			account: {
-				id: removePassUser.account?.id || '',
-			},
-			id: removePassUser.id
+			id: removePassUser.id,
 		}
 
 		return {
