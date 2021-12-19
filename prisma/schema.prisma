@@ -40,14 +40,14 @@ model TrainingSheet {
 
 model FitLevel {
   id String @id
-  name String
+  name String @unique
   created_at DateTime @default(now())
   training_sheet TrainingSheet?
 }
 
 model Goal {
   id String @id
-  name String
+  name String @unique
   created_at DateTime @default(now())
   training_sheet TrainingSheet?
 }
