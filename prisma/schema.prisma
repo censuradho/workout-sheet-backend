@@ -31,6 +31,15 @@ model TrainingSheet {
   height Float
   user_id String
   user User @relation(fields: [user_id], references: [id])
+  goal_id String
+  goal Goal @relation(fields: [goal_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
+}
+
+model Goal {
+  id String @id
+  name String
+  created_at DateTime @default(now())
+  training_sheet TrainingSheet?
 }
