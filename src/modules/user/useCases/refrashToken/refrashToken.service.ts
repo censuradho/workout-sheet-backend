@@ -19,7 +19,6 @@ export class RefrashTokenService  {
 				user: {
 					select: {
 						id: true,
-						account: true,
 						email: true,
 						created_at: true,
 						updated_at: true
@@ -37,14 +36,10 @@ export class RefrashTokenService  {
 
 		const payload: SignJWTPayload = {
 			id: refrashToken.user.id,
-			account_id: String(refrashToken.user.account?.id)
 		}
 		
 		const user: UserSignIn = {
 			id: refrashToken.user_id,
-			account: {
-				id: refrashToken.user.account?.id || ''
-			}
 		}
 		
 		const token = generateToken(payload)
