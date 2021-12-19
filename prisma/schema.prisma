@@ -39,7 +39,6 @@ model TrainingSheet {
   updated_at DateTime @updatedAt @default(now())
 }
 
-
 model FitLevel {
   id String @id
   name String
