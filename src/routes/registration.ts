@@ -1,4 +1,5 @@
 import { Router } from 'express'
+
 import validator from 'middlewares/validator'
 
 import { registrationController, createRegistrationValidator } from 'modules/user/useCases/registration'

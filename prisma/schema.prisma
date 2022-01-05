@@ -11,7 +11,7 @@ model User {
   id String @id
   email String
   password String
-  training_sheet TrainingSheet?
+  training_sheet TrainingSheet[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
   refrash_token RefrashToken?
@@ -29,25 +29,12 @@ model TrainingSheet {
   weight Float
   height Float
   user_id String
+  chronic_problem String?
   user User @relation(fields: [user_id], references: [id])
-  goal_id String
-  goal Goal @relation(fields: [goal_id], references: [id])
-  fit_level_id String
-  fit_level FitLevel @relation(fields: [fit_level_id], references: [id])
+  goal String
+  fit_level String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
 }
 
-model FitLevel {
-  id String @id
-  name String @unique
-  created_at DateTime @default(now())
-  training_sheet TrainingSheet?
-}
 
-model Goal {
-  id String @id
-  name String @unique
-  created_at DateTime @default(now())
-  training_sheet TrainingSheet?
-}
